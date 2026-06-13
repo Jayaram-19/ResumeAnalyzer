@@ -1,0 +1,20 @@
+Alex Engineer
+alex.engineer@example.com | +1 (555) 123-4567 | github.com/alexengineer | linkedin.com/in/alexengineer
+
+---
+
+SUMMARY
+Results-oriented software developer with experience in React and Node.js.
+
+TECHNICAL SKILLS
+JavaScript, React, Node.js, Express, HTML, CSS, Git
+
+WORK EXPERIENCE
+Software Developer | WebTech Inc.
+2023 - Present
+- Responsible for maintaining the codebase and writing React components.
+- Helped the team design databases and API endpoints.
+
+EDUCATION
+Bachelor of Science in Computer Science
+State University | 2019 - 2023

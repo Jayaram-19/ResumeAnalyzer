@@ -1,0 +1,6 @@
+{
+  "name": "skillmetric",
+  "dependencies": {
+    "opencode-ai": "^1.15.6"
+  }
+}
