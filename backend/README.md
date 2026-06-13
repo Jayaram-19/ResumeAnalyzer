@@ -16,6 +16,40 @@ This is the API server for **SkillMetric**. It handles file uploads, parsing, us
 
 ---
 
+##  Backend Request & Data Processing Flow
+
+Below is the request-response lifecycle mapping the middleware stack, file text extraction, database storage, and AI processing pipeline for backend API requests:
+
+```mermaid
+graph TD
+    Client[Client Request] --> Router[Express Router]
+    Router --> ProtectMW[protect Middleware - JWT Validate & Load User]
+    
+    %% Upload Route Pipeline
+    ProtectMW -->|POST /api/resumes/upload| MulterMW[multer Middleware - Size & Format Validation]
+    MulterMW -->|Store File locally| UploadsDir[(/uploads Directory)]
+    MulterMW -->|Extract text| FileParser[parser.js: PDF-parse / Mammoth]
+    FileParser -->|Create Document| ResumeDB[(MongoDB: Resumes Collection)]
+    ResumeDB -->|Return Resume metadata| Client
+    
+    %% Analysis Route Pipeline
+    ProtectMW -->|POST /api/resumes/analyze/:id| RetrieveResume[Retrieve Resume rawText from DB]
+    RetrieveResume -->|Verify API Key| KeyCheck{Gemini Key Set?}
+    KeyCheck -->|No| MockEngine[aiEngine.js: generateMockAnalysis]
+    KeyCheck -->|Yes| GeminiCall[aiEngine.js: Google Gemini SDK call]
+    
+    GeminiCall -->|Transient Error?| RetryLoop{Retry Attempt < 3?}
+    RetryLoop -->|Yes| Backoff[Exponential Backoff Delay] --> GeminiCall
+    RetryLoop -->|No| ErrorHandler[Global Error Handler]
+    
+    GeminiCall -->|Success: Parse JSON| Normalize[resumeFormatter.js: Markdown Normalization]
+    MockEngine -->|Generate Mock Report| Normalize
+    Normalize -->|Save Analysis| AnalysisDB[(MongoDB: Analyses Collection)]
+    AnalysisDB -->|Return Analysis payload| Client
+```
+
+---
+
 ##  Google Gemini AI Core Integration (`/utils/aiEngine.js`)
 
 The AI engine orchestrates communication with Google Generative AI to perform resume analysis.

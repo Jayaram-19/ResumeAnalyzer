@@ -43,22 +43,30 @@ This is the client-side single page web application (SPA) for **SkillMetric**. I
 
 ##  Client Data & Action Flow
 
-```text
-User Actions (Upload, Select Role, Analyze)
-    │
-    ▼
-Axios Request API interceptor (Attaches JWT Header) ──► Server REST endpoints
-    │
-    ▼
-Axios Response Handler
-    ├── Success (Score >= 80) ──► Confetti Burst
-    ├── Set state: analysis metrics ──► Redraws Chart.js Charts
-    └── Set state: raw Markdown text ──► Triggers normalization helper
-                                                │
-                                                ▼
-                                    Converts raw Gemini text to 
-                                    ATS-optimised Markdown with
-                                    default links & formatted anchors
+Below is the visual block diagram representing the client state machine and data lifecycle within the React frontend:
+
+```mermaid
+graph TD
+    User([User]) -->|Upload File| UploadZone[Dashboard Dropzone]
+    UploadZone -->|State: File Object| AxiosUpload[Axios: POST /upload]
+    AxiosUpload -->|On Success: Set Resume Meta| DashboardHistory[State: History Updated]
+    
+    User -->|Type Target Role & Click Analyze| AnalyzeBtn[Analyze Button]
+    AnalyzeBtn -->|State: resumeId + targetRole| AxiosAnalyze[Axios: POST /analyze/:id]
+    AxiosAnalyze -->|On Success: Get Report JSON| RedirectDetails[React Router: /analysis/:id]
+    
+    RedirectDetails -->|Fetch Report Details| AxiosFetchReport[Axios: GET /analysis/:id]
+    AxiosFetchReport -->|State: analysisData| RenderViews[Render Details View]
+    
+    RenderViews -->|Score >= 80| Confetti[Canvas Confetti Trigger]
+    RenderViews -->|Breakdown Values| ChartJS[Chart.js Radar & Gauge]
+    RenderViews -->|Suggestions List| XYZCards[Google X-Y-Z Rewrite Cards]
+    RenderViews -->|improvedResumeText| MDEditor[Markdown Editor & Previewer]
+    
+    User -->|Edit Markdown| MDEditor
+    MDEditor -->|State Update| MDEditor
+    MDEditor -->|Select Template| TemplateSelector[CSS Theme Injector: Corporate/Tech/Minimalist]
+    User -->|Click Download / Print| ExportSystem[HTML / Word / Text / Print Window]
 ```
 
 ---
