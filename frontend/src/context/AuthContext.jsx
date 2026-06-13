@@ -21,7 +21,7 @@ export const AuthProvider = ({ children }) => {
     const loadUser = async () => {
       if (token) {
         try {
-          const res = await API.get('/auth/me');
+          const res = await API.get('/api/auth/me');
           setUser(res.data.data);
         } catch (error) {
           console.error('Failed to load user with current token:', error);
