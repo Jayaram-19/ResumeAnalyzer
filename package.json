@@ -1,6 +1,8 @@
 {
   "name": "skillmetric",
   "dependencies": {
+    "dotenv": "^17.4.2",
+    "mongoose": "^9.7.0",
     "opencode-ai": "^1.15.6"
   }
 }

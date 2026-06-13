@@ -22,7 +22,7 @@ app.use(helmet({
 
 // CORS Middleware
 app.use(cors({
-  origin: '*', // In production, replace with specific frontend URL
+  origin:['http://localhost:5000','https://resume-analyzer-lac-phi.vercel.app'], // In production, replace with specific frontend URL
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));
