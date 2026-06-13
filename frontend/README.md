@@ -1,10 +1,10 @@
-# 🎨 SkillMetric Frontend — React 19 & Vite Client Portal
+#  SkillMetric Frontend — React 19 & Vite Client Portal
 
 This is the client-side single page web application (SPA) for **SkillMetric**. It features an interactive, dark/light themed, glassmorphic design that handles resume uploads, visualizes ATS grading scores, provides side-by-side markdown comparison editing, and exports files cleanly to PDF, Word, or HTML.
 
 ---
 
-## 🛠️ Technology Stack & Justifications
+##  Technology Stack & Justifications
 
 *   **React 19**: Chosen for its fast reconciliation, hook-based state management, and component architecture. This allows isolated states for complex pages like `AnalysisDetails.jsx` which manages interactive charts, custom dropdown selections, markdown parsers, and printing.
 *   **Vite**: The build engine and local dev server. Vite uses native ES modules to compile code in milliseconds, making the developer feedback loop instant compared to legacy Webpack builds.
@@ -17,7 +17,7 @@ This is the client-side single page web application (SPA) for **SkillMetric**. I
 
 ---
 
-## 📂 Core Views & Pages (`/src/pages/`)
+## Core Views & Pages (`/src/pages/`)
 
 ### 1. Register & Login (`Register.jsx` / `Login.jsx`)
 *   Provides secure, animated login forms with interactive field validation.
@@ -41,7 +41,7 @@ This is the client-side single page web application (SPA) for **SkillMetric**. I
 
 ---
 
-## 🔄 Client Data & Action Flow
+##  Client Data & Action Flow
 
 ```text
 User Actions (Upload, Select Role, Analyze)
@@ -63,7 +63,7 @@ Axios Response Handler
 
 ---
 
-## ⚙️ Development Setup & Run Guide
+##  Development Setup & Run Guide
 
 ### 1. Prerequisites
 Ensure you have **Node.js** (v18 or higher recommended) installed.

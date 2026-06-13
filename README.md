@@ -1,10 +1,10 @@
-# 📊 SkillMetric — AI-Powered Resume Analyzer & ATS Optimizer
+#  SkillMetric — AI-Powered Resume Analyzer & ATS Optimizer
 
 SkillMetric is a state-of-the-art, full-stack web application designed to help job seekers audit, grade, and optimize their resumes against specific target job descriptions. By uploading a resume in PDF, DOCX, or plain text formats, users receive instant, actionable, and visually rich ATS compatibility scores, detailed category breakdowns, keyword analysis, bullet-point rewrites based on Google's X-Y-Z formula, and an automated Markdown resume rewritten to maximize parser readability.
 
 ---
 
-## 🚀 Key Features
+##  Key Features
 
 *   **Secure Authentication & Personal History**: Register and login with JWT-based sessions. Keep a persistent history of every resume uploaded and all analysis runs.
 *   **Multi-Format File Parsing**: Upload `.pdf`, `.docx`, or `.txt` resumes directly. The system extracts raw text safely on the server side.
@@ -16,7 +16,7 @@ SkillMetric is a state-of-the-art, full-stack web application designed to help j
 
 ---
 
-## 🛠️ Unified Tech Stack & Architecture Decisions
+##  Unified Tech Stack & Architecture Decisions
 
 This project uses a decoupled Client-Server architecture. Below is the breakdown of technologies used and the technical justification for each decision.
 
@@ -38,7 +38,7 @@ This project uses a decoupled Client-Server architecture. Below is the breakdown
 
 ---
 
-## 🔄 System Architecture & Data Flow
+##  System Architecture & Data Flow
 
 Below is the execution diagram mapping how data moves between the client, backend controllers, databases, and the Gemini API during a typical analysis pipeline:
 
@@ -73,7 +73,7 @@ graph TD
 
 ---
 
-## 🤖 Google Gemini AI Integration
+##  Google Gemini AI Integration
 
 The core intelligent analyzer is located in `backend/utils/aiEngine.js`. It utilizes the `@google/generative-ai` SDK to connect to Google's generative models.
 
@@ -98,7 +98,7 @@ The core intelligent analyzer is located in `backend/utils/aiEngine.js`. It util
 
 ---
 
-## ⚙️ Setting Up & Running the Project
+##  Setting Up & Running the Project
 
 ### Prerequisites
 *   [Node.js](https://nodejs.org/) (v18 or higher recommended)
@@ -149,7 +149,7 @@ Vite will host the web portal locally (typically on `http://localhost:5173`). Op
 
 ---
 
-## 📁 Repository Directory Structure
+##  Repository Directory Structure
 
 ```text
 ResumeAnalyzer/
