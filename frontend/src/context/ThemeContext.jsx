@@ -31,7 +31,7 @@ export const ThemeProvider = ({ children }) => {
     // Update favicon
     const favicon = document.querySelector('link[rel="icon"]');
     if (favicon) {
-      favicon.href = theme === 'dark' ? '/logo-dark.png' : '/logo-light.png';
+      favicon.href = theme === 'dark' ? '/logo-dark.png' : '/logo.png';
     }
   }, [theme]);
 
