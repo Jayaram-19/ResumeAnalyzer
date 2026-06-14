@@ -122,17 +122,28 @@ const AnalysisDetails = () => {
 
   const extractResumeUrl = (text, regex) => text.match(regex)?.[0]?.trim().replace(/[),.;]+$/g, '') || '';
 
-  const extractResumeAddress = (text) => {
+  const extractResumeAddress = (text, candidateName = '') => {
     const contactArea = (text.split(/\n\s*(?:---|##\s+)/)[0] || text);
-    const addressLine = contactArea
-      .split(/\r?\n/)
-      .map(cleanResumeLine)
-      .find((line) => {
-        if (!line || line.includes('@') || /https?:\/\/|linkedin\.com|github\.com|leetcode\.com/i.test(line)) return false;
-        return /\b(address|location)\b\s*:/i.test(line) ||
-          /\b\d{5,6}\b/.test(line);
-      });
-    return addressLine ? addressLine.replace(/^(address|location)\s*:\s*/i, '').replace(/\s*\|\s*/g, ', ') : '';
+    const lines = contactArea.split(/\r?\n/).map(cleanResumeLine).filter(Boolean);
+    
+    for (const line of lines) {
+      if (/\b(address|location)\b\s*:/i.test(line)) {
+        return line.replace(/^(address|location)\s*:\s*/i, '').replace(/\s*\|\s*/g, ', ').trim();
+      }
+    }
+    
+    const items = contactArea.split(/[|\n]/).map(cleanResumeLine).filter(Boolean);
+    for (const item of items) {
+      if (item.includes('@') || /https?:\/\/|linkedin\.com|github\.com|leetcode\.com/i.test(item)) continue;
+      if (/(?:\+?\d[\d\s().-]{7,}\d)/.test(item)) continue;
+      if (item.toLowerCase().startsWith('mail') || item.toLowerCase().startsWith('phone')) continue;
+      if (candidateName && (item === candidateName || item.toLowerCase().includes(candidateName.toLowerCase()))) continue;
+      
+      if (/[a-zA-Z]/.test(item) && item.length > 3 && item.length < 100) {
+        return item;
+      }
+    }
+    return '';
   };
 
   const extractResumeProjectLinks = (text) => {
@@ -213,9 +224,9 @@ const AnalysisDetails = () => {
       /(?:https?:\/\/|www\.)[-a-zA-Z0-9@:%._+~#=]{1,256}\.(?:dev|io|me|app|site|tech|co|net|org|com)\b(?:[-a-zA-Z0-9()@:%_+.~#?&//=]*)/i
     );
     const portfolio = /linkedin\.com|github\.com|leetcode\.com/i.test(portfolioMatch) ? '' : portfolioMatch;
-    const address = extractResumeAddress(source);
+    const address = extractResumeAddress(source, candidateName);
     const contactLine = [
-      resumeMarkdownLink('Email', `mailto:${email || 'candidate@email.com'}`),
+      resumeMarkdownLink('Email', `https://mail.google.com/mail/?view=cm&fs=1&to=${email || 'candidate@email.com'}`),
       phone,
       resumeMarkdownLink('LinkedIn', linkedin),
       resumeMarkdownLink('GitHub', github),
