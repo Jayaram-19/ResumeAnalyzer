@@ -305,7 +305,11 @@ const AnalysisDetails = () => {
 
   const formatInlineMarkdown = (text) => {
     return escapeHtml(text)
-      .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: underline;">$1</a>')
+      .replace(/\[([^\]]+)\]\(([^)]+)\)/g, (match, label, href) => {
+        const isExternal = !/^(mailto:|tel:)/i.test(href);
+        const target = isExternal ? ' target="_blank" rel="noopener noreferrer"' : '';
+        return `<a href="${href}"${target} style="color: inherit; text-decoration: underline;">${label}</a>`;
+      })
       .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
       .replace(/\*(.*?)\*/g, '<em>$1</em>');
   };
