@@ -215,7 +215,7 @@ const AnalysisDetails = () => {
     const portfolio = /linkedin\.com|github\.com|leetcode\.com/i.test(portfolioMatch) ? '' : portfolioMatch;
     const address = extractResumeAddress(source);
     const contactLine = [
-      resumeMarkdownLink('Mail', `mailto:${email || 'candidate@email.com'}`),
+      resumeMarkdownLink(email || 'candidate@email.com', `mailto:${email || 'candidate@email.com'}`),
       phone,
       resumeMarkdownLink('LinkedIn', linkedin),
       resumeMarkdownLink('GitHub', github),
@@ -257,33 +257,25 @@ const AnalysisDetails = () => {
     const ensureProjectLinks = (projectLines) => {
       const knownProjectLinks = extractResumeProjectLinks(source);
       const enhanced = [];
-      let projectTitle = '';
-      let projectHasLink = false;
       let knownLinkIndex = 0;
 
-      const flushProjectLink = () => {
-        if (!projectTitle || projectHasLink) return;
-        const projectSlug = slugifyResumeText(projectTitle, 'project');
-        enhanced.push(`- [Project Link](${knownProjectLinks[knownLinkIndex++] || `https://github.com/${slug}/${projectSlug}`})`);
-      };
-
       projectLines.forEach((line) => {
-        const headingMatch = line.trim().match(/^#{3,4}\s+(.+)$/);
+        const trimmed = line.trim();
+        const headingMatch = trimmed.match(/^#{3,4}\s+(.+)$/);
         if (headingMatch) {
-          flushProjectLink();
-          projectTitle = cleanResumeLine(headingMatch[1].replace(/\|.*$/, ''));
-          projectHasLink = /\]\(|https?:\/\/|www\.|github\.com|leetcode\.com/i.test(line);
-          enhanced.push(line);
+          if (!/\]\(|https?:\/\/|www\./i.test(trimmed)) {
+            const projectTitle = cleanResumeLine(headingMatch[1].replace(/\|.*$/, ''));
+            const projectSlug = slugifyResumeText(projectTitle, 'project');
+            const link = knownProjectLinks[knownLinkIndex++] || `https://github.com/${slug}/${projectSlug}`;
+            enhanced.push(`${trimmed} | [Project Link](${link})`);
+          } else {
+            enhanced.push(line);
+          }
           return;
         }
-        if (projectTitle && /\]\(|https?:\/\/|www\.|github\.com|leetcode\.com/i.test(line)) projectHasLink = true;
         enhanced.push(line);
       });
 
-      flushProjectLink();
-      if (!enhanced.some((line) => /\]\(|https?:\/\/|www\.|github\.com/i.test(line))) {
-        enhanced.push(`- [Project Link](${knownProjectLinks[0] || `https://github.com/${slug}/project-repository`})`);
-      }
       return enhanced;
     };
 
