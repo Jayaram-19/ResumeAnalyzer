@@ -215,7 +215,7 @@ const AnalysisDetails = () => {
     const portfolio = /linkedin\.com|github\.com|leetcode\.com/i.test(portfolioMatch) ? '' : portfolioMatch;
     const address = extractResumeAddress(source);
     const contactLine = [
-      resumeMarkdownLink(email || 'candidate@email.com', `mailto:${email || 'candidate@email.com'}`),
+      resumeMarkdownLink('Email', `mailto:${email || 'candidate@email.com'}`),
       phone,
       resumeMarkdownLink('LinkedIn', linkedin),
       resumeMarkdownLink('GitHub', github),
